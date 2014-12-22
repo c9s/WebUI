@@ -1,0 +1,23 @@
+{
+    "name": "corneltek/webui",
+    "description": "Web UI Components Library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "c9s",
+            "email": "cornelius.howl@gmail.com"
+        }
+    ],
+    "require": {
+        "corneltek/formkit": "*"
+    },
+    "require-dev": {
+        "corneltek/phpunit-testmore": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "WebUI": "src"
+        }
+    },
+    "version": "1.0.0"
+}
