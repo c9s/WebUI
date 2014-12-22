@@ -6,6 +6,9 @@ class BreadcrumbsTest extends PHPUnit_Framework_TestCase
     public function testOutput()
     {
         $breadcrumbs = new Breadcrumbs;
+        ok($breadcrumbs);
+
+        ok($breadcrumbs->render());
     }
 }
 

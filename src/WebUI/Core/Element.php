@@ -287,7 +287,7 @@ class Element
     /**
      * @var array class name
      */
-    public $class = array();
+    protected $class = array();
 
 
     /**
@@ -414,6 +414,14 @@ class Element
         $index = array_search( $class, $this->class );
         array_splice( $this->class, $index , 1 );
         return $this;
+    }
+
+    /**
+     * Add class
+     */
+    public function getClass()
+    {
+        return $this->class;
     }
 
 
@@ -727,7 +735,7 @@ class Element
      * @param array $attributes attributes to override.
      * @param string HTML
      */
-    public function render( $attributes = array() ) 
+    public function render($attributes = array()) 
     {
         if( ! $this->tagName ) {
             throw new Exception('tagName is not defined.');
