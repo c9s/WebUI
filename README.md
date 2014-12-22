@@ -4,6 +4,11 @@ WebUI
 WebUI aims to provide a PHP interface to build HTML components with microdata.
 
 
+
+Synopsis
+-------------------------
+
+
 ```php
 $el = new Element('span');
 $el->append('&#62;');
@@ -35,4 +40,9 @@ And we will get:
   </span>
 </div>
 ```
+
+
+Components
+----------------------
+
 
