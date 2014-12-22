@@ -9,8 +9,6 @@ class Breadcrumbs extends Div
 
     protected $class = array('breadcrumbs');
 
-    protected $items = array();
-
     public function setSeparatorElement(Element $element) {
         $this->separator = $element;
     }
@@ -19,19 +17,29 @@ class Breadcrumbs extends Div
         $this->separator = $html;
     }
 
-    public function appendElement(Element $element)
+    public function appendLink($label, $url, $title = NULL, array $attributes = array() )
     {
-        $this->items[] = $element;
+        $span = new Element('span');
+        $span['itemscope'] = NULL;
+        $span['itemtype'] = 'http://data-vocabulary.org/Breadcrumb';
+
+        $a = new Element('a');
+        $a['title'] = $title ?: $label;
+        $a['itemprop'] = 'url';
+        $a['href'] = $url;
+
+        # <span itemprop="title">Home</span>
+        $title = new Element('span');
+        $title->appendText($label);
+        $title['itemprop'] = 'title';
+        $a->addChild($title);
+
+        $span->addChild($a);
+        $this->addChild($span);
     }
 
-    public function appendLink($label, $url, array $attributes = array() )
-    {
-        $element = new Element;
-        $this->items[] = $element;
-    }
 
-
-    public function toHtml()
+    public function renderChildren()
     {
         $sep = '';
         if ($this->separator instanceof Element) {
@@ -43,20 +51,16 @@ class Breadcrumbs extends Div
             $sep = '<span class="arrow-space">&#62;</span>';
         }
 
-        foreach($this->items as $idx => $item) {
+        $html = '';
+        foreach($this->children as $idx => $item) {
             if ($idx > 0) {
                 // append separator
-                $this->addChild($sep);
+                $html .= "\n  " . $sep;
             }
             // append the link element
-
+            $html .= "\n  " . $item->render();
         }
-    }
-
-
-    public function __toString()
-    {
-
+        return $html;
     }
 
 

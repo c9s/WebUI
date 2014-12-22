@@ -42,7 +42,6 @@ class Element implements ArrayAccess
     {
         $this->tagName = $tagName;
         $this->setAttributeType( 'class', self::ATTR_ARRAY );
-        $this->setAttributeType( 'id', self::ATTR_ARRAY );
         $this->setAttributes( $attributes );
         $this->init($attributes);
     }
@@ -95,7 +94,7 @@ class Element implements ArrayAccess
      */
     public function __get($name)
     {
-        if( isset( $this->_attributes[ $name ] ) )
+        if (isset($this->_attributes[ $name ] ))
             return $this->_attributes[ $name ];
     }
 
@@ -139,12 +138,15 @@ class Element implements ArrayAccess
     {
         if ( property_exists($this, $name) ) {
             return $this->$name;
-        } elseif ( isset($this->_attributes[ $name ] ) ) {
+        } elseif (array_key_exists($name, $this->_attributes)) {
             return $this->_attributes[ $name ];
         }
     }
 
-
+    public function hasAttribute($name)
+    {
+        return property_exists($this, $name) || array_key_exists($name, $this->_attributes);
+    }
 
     /**
      * Check if the attribute is registered 
@@ -257,7 +259,7 @@ class Element implements ArrayAccess
 
     public function offsetSet($name,$value)
     {
-        $this->setAttribute( $name, array($value) );
+        $this->setAttribute($name, array($value));
     }
     
     public function offsetExists($name)
@@ -319,10 +321,9 @@ class Element implements ArrayAccess
 
 
     /**
-     * @var array id field
+     * @var id field
      */
     public $id;
-
 
     /**
      * @var array Standard attribute from element class member.
@@ -628,7 +629,7 @@ class Element implements ArrayAccess
     {
         return $this->_renderAttributes($this->standardAttributes)
             . $this->_renderAttributes($this->customAttributes)
-            . $this->_renderAttributes(array_keys($this->_attributes));
+            . $this->_renderAttributes(array_keys($this->_attributes), true);
     }
 
     /**
@@ -637,13 +638,17 @@ class Element implements ArrayAccess
      * @param array $keys
      * @return string 
      */
-    protected function _renderAttributes($keys) 
+    protected function _renderAttributes($keys, $allowNull = false) 
     {
         $html = '';
-        foreach( $keys as $key ) {
-            if( $val = $this->$key ) {
-                if( is_array($val) ) {
+        foreach($keys as $key) {
+            if ($this->hasAttribute($key)) {
+                $val = $this->getAttributeValue($key);
 
+                if (!$allowNull && ($val === NULL || (is_array($val) && empty($val))) )
+                    continue;
+
+                if (is_array($val)) {
                     // check if the array is an indexed array, check keys of 
                     // array[0..cnt] 
                     //
@@ -663,7 +668,7 @@ class Element implements ArrayAccess
                     //
                     //      "border: 1px solid #ccc;"
                     //
-                    if( array_keys($val) === range(0, count($val)-1) ) {
+                    if (array_keys($val) === range(0, count($val)-1) ) {
                         $val = join(' ', $val);
                     } else {
                         $val0 = $val;
@@ -675,7 +680,7 @@ class Element implements ArrayAccess
                 }
                 // for boolean type values like readonly attribute, 
                 // we render it as readonly="readonly".
-                elseif ( is_bool($val) ) {
+                elseif ($val === TRUE || $val === FALSE) {
                     $val = $key;
                 }
 
@@ -683,10 +688,14 @@ class Element implements ArrayAccess
                 //
                 // for dataUrl attributes, render these attributes like data-url
                 // ( use dash separator)
-                $html .= sprintf(' %s="%s"', 
-                        strtolower(preg_replace('/[A-Z]/', '-$0', $key)),
-                        htmlspecialchars( $val )
-                );
+                if ($val === NULL) {
+                    $html .= sprintf(' %s',strtolower(preg_replace('/[A-Z]/', '-$0', $key)));
+                } else {
+                    $html .= sprintf(' %s="%s"', 
+                            strtolower(preg_replace('/[A-Z]/', '-$0', $key)),
+                            htmlspecialchars( $val )
+                        );
+                }
             }
         }
         return $html;
@@ -745,7 +754,7 @@ class Element implements ArrayAccess
         $html = $this->open( $attributes );
 
         // render close tag
-        if( $this->hasChildren() ) {
+        if ($this->hasChildren()) {
             $html .= $this->renderChildren();
         }
 
