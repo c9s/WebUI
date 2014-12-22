@@ -6,8 +6,7 @@ use DOMNode;
 use DOMText;
 use ArrayAccess;
 
-class Element
-    implements ArrayAccess
+class Element implements ArrayAccess
 {
     // extracted from CascadingAttribute
     const  ATTR_ANY = 0;
@@ -33,6 +32,21 @@ class Element
     protected $_attributes = array();
 
     protected $_ignoredAttributes = array();
+
+
+    /**
+     *
+     * @param string $tagName Tag name
+     */
+    public function __construct($tagName, $attributes = array() )
+    {
+        $this->tagName = $tagName;
+        $this->setAttributeType( 'class', self::ATTR_ARRAY );
+        $this->setAttributeType( 'id', self::ATTR_ARRAY );
+        $this->setAttributes( $attributes );
+        $this->init($attributes);
+    }
+
 
     public function isIgnoredAttribute($name)
     {
@@ -327,19 +341,6 @@ class Element
 
 
 
-
-    /**
-     *
-     * @param string $tagName Tag name
-     */
-    public function __construct($tagName, $attributes = array() )
-    {
-        $this->tagName = $tagName;
-        $this->setAttributeType( 'class', self::ATTR_ARRAY );
-        $this->setAttributeType( 'id', self::ATTR_ARRAY );
-        $this->setAttributes( $attributes );
-        $this->init($attributes);
-    }
 
     protected function init($attributes)
     {
