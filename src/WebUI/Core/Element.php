@@ -127,7 +127,7 @@ class Element implements ArrayAccess
      */
     public function setAttributeValue($name,$arg)
     {
-        if ( property_exists($this, $name) ) {
+        if (property_exists($this, $name)) {
             $this->$name = $arg;
         } else {
             $this->_attributes[ $name ] = $arg;
@@ -487,7 +487,10 @@ class Element implements ArrayAccess
     }
 
 
-
+    public function setInnerText($text)
+    {
+        $this->children = array(new DOMText($text));
+    }
 
     /**
      * Append DOMText node to children list.
