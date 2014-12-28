@@ -492,6 +492,12 @@ class Element implements ArrayAccess
         $this->children = array(new DOMText($text));
     }
 
+
+    public function setInnerHtml($html)
+    {
+        $this->children = array(strval($html));
+    }
+
     /**
      * Append DOMText node to children list.
      */
@@ -547,6 +553,19 @@ class Element implements ArrayAccess
     public function getChildrenSize()
     {
         return count($this->children);
+    }
+
+    public function getChildAt($index)
+    {
+        if (isset($this->children[$index])) {
+            return $this->children[$index];
+        }
+    }
+
+    public function removeChildAt($index)
+    {
+        $removed = array_splice($this->children, $index, 1);
+        return $removed;
     }
 
 
