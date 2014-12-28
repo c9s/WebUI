@@ -1,0 +1,20 @@
+language: php
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+
+before_script:
+  - phpenv rehash
+  - composer self-update
+  - composer require satooshi/php-coveralls:dev-master --no-update --dev
+  - composer install --dev
+
+script: 
+  - phpunit
+
+after_script:
+  - php vendor/bin/coveralls -v
+
+cache:
+  - vendor
