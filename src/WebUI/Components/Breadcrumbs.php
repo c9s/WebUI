@@ -47,6 +47,7 @@ class Breadcrumbs extends Element
 
         $a = new Element('a', $attributes);
         $a['title'] = $title ?: $label;
+        $a['alt'] = $title ?: $label;
         $a['itemprop'] = 'url';
         $a['href'] = $url;
         $a['aria-level'] = $this->getChildrenSize() + 1;
