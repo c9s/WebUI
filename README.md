@@ -12,7 +12,7 @@ Synopsis
 ```php
 $el = new Element('span');
 $el->append('&#62;');
-$el->addClass('arrow-space');
+$el->addClass('separator');
 
 $breadcrumbs = new Breadcrumbs;
 
@@ -32,7 +32,7 @@ And we will get:
       <span itemprop="title">Home</span>
     </a>
   </span>
-  <span class="arrow-space">&#62;</span>
+  <span class="separator">&#62;</span>
   <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
     <a title="All Products" itemprop="url" href="/">
       <span itemprop="title">Product</span>

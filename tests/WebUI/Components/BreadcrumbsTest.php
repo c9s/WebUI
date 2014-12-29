@@ -8,7 +8,7 @@ class BreadcrumbsTest extends PHPUnit_Framework_TestCase
     {
         $el = new Element('span');
         $el->append('&#62;');
-        $el->addClass('arrow-space');
+        $el->addClass('separator');
 
         $breadcrumbs = new Breadcrumbs;
         ok($breadcrumbs);

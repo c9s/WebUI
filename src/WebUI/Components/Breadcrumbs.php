@@ -80,7 +80,7 @@ class Breadcrumbs extends Element
             $sep = $this->separator;
         } else {
             // the default separator
-            $sep = '<span class="arrow-space">&#62;</span>';
+            $sep = '<span class="separator">&#62;</span>';
         }
 
         $html = '';
