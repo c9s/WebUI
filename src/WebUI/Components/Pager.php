@@ -105,6 +105,7 @@ class Pager extends Element
     }
 
     public function appendNavItem($text, $page, $active = false, $disabled = false) {
+        $li = new Element('li');
         $a = new Element('a');
         $a->appendTo($li);
         $a->setInnerHtml($text);
@@ -112,7 +113,6 @@ class Pager extends Element
         $href = $this->buildQuery($_REQUEST, array("page" => $page));
         $a->setAttributeValue('href', $href);
 
-        $li = new Element('li');
         $li->setAttributeValue('role', 'presentation');
         if ($disabled) {
             $li->addClass('disabled');
