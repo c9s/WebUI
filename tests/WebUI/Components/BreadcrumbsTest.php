@@ -15,12 +15,14 @@ class BreadcrumbsTest extends PHPUnit_Framework_TestCase
 
         $breadcrumbs->setSeparatorElement($el);
 
-        $breadcrumbs->appendLink('Home', '/', 'The Home Page');
+        $breadcrumbs->appendIndexLink('Home', '/', 'The Home Page');
 
-        $breadcrumbs->appendLink('Product', '/', 'All Products');
+        $breadcrumbs->appendLink('Product', '/product', 'All Products');
+
+        $breadcrumbs->appendLink('Product A123', '/product/a123', 'Product A123');
 
         ok($html = $breadcrumbs->render());
-        var_dump( $html ); 
+        // echo $html, "\n\n";
     }
 }
 
