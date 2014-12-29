@@ -22,6 +22,7 @@ class Breadcrumbs extends Div
         $span = new Element('span');
         $span['itemscope'] = NULL;
         $span['itemtype'] = 'http://data-vocabulary.org/Breadcrumb';
+        $span['role'] = 'presentation';
 
         $a = new Element('a');
         $a['title'] = $title ?: $label;
