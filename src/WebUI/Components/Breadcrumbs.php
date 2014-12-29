@@ -49,6 +49,7 @@ class Breadcrumbs extends Element
         $a['title'] = $title ?: $label;
         $a['itemprop'] = 'url';
         $a['href'] = $url;
+        $a['aria-level'] = $this->getChildrenSize() + 1;
 
         # <span itemprop="title">Home</span>
         $title = new Element('span');
