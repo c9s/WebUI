@@ -10,6 +10,8 @@ class Menu extends MenuFolder
 {
     protected $ul;
 
+    protected $classes = array('webui-menu');
+
     public function __construct(array $attributes = array())
     {
         Element::__construct('nav', array_merge(array(
