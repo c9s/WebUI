@@ -537,7 +537,7 @@ class Element implements ArrayAccess
      */
     public function hasChildren()
     {
-        return ! empty($this->children);
+        return !empty($this->children);
     }
 
     /**
@@ -569,30 +569,26 @@ class Element implements ArrayAccess
     }
 
 
-    protected function _renderNodes($nodes)
+    protected function _renderNodes(array $nodes)
     {
         $html = '';
-        foreach( $nodes as $node ) 
+        foreach($nodes as $node)
         {
-            if( $node instanceof DOMText || $node instanceof DOMNode ) {
+            if ($node instanceof DOMText || $node instanceof DOMNode ) {
                 // to use C14N(), the DOMNode must be belongs to an instance of DOMDocument.
                 $dom = new DOMDocument;
                 $dom->appendChild($node);
-                $html .= $node->C14N();
-            }
-            elseif( is_string($node) ) 
-            {
+                $html .= $node->C14N();;
+            } elseif (is_string($node) ) {
                 $html .= $node;
-            }
-            elseif( is_object($node) 
-                && ( $node instanceof \FormKit\Element
-                    || $node instanceof \FormKit\Layout\BaseLayout 
-                    || method_exists($node,'render')
-                ) )
+            } elseif (is_object($node)
+                        && ($node instanceof \FormKit\Element
+                         || $node instanceof \FormKit\Layout\BaseLayout 
+                         || method_exists($node,'render') )) 
             {
                 $html .= $node->render();
             }
-            else 
+            else
             {
                 throw new Exception('Unknown node type');
             }
@@ -606,7 +602,10 @@ class Element implements ArrayAccess
      */
     public function renderChildren()
     {
-        return $this->_renderNodes($this->children);
+        if ($this->hasChildren()) {
+            return $this->_renderNodes($this->children);
+        }
+        return '';
     }
 
     /**
@@ -617,14 +616,13 @@ class Element implements ArrayAccess
     public function setAttributes($attributes)
     {
         foreach( $attributes as $k => $val ) {
-            if ( $this->isIgnoredAttribute($k) )
+            if ($this->isIgnoredAttribute($k)) {
                 continue;
+            }
 
             // this is for adding new class name with
             //   +=newClass
-            if( is_string($val) && strpos($val ,'+=') !== false ) {
-
-                
+            if (is_string($val) && strpos($val ,'+=') !== false ) {
                 $origValue = $this->getAttributeValue($k);
                 if( is_string($origValue) ) {
                     $origValue .= ' ' . substr($val,2);
@@ -740,7 +738,7 @@ class Element implements ArrayAccess
                     . $this->renderAttributes()
                     ;
         // should we close it ?
-        if( $this->closeEmpty || $this->hasChildren() ) {
+        if ($this->closeEmpty || $this->hasChildren()) {
             $html .= '>';
         } else {
             $html .= '/>';
@@ -774,12 +772,7 @@ class Element implements ArrayAccess
         }
 
         $html = $this->open( $attributes );
-
-        // render close tag
-        if ($this->hasChildren()) {
-            $html .= $this->renderChildren();
-        }
-
+        $html .= $this->renderChildren();
         $html .= $this->close();
         return $html;
     }
