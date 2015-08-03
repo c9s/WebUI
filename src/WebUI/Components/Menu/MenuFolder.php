@@ -4,6 +4,8 @@ use Exception;
 use WebUI\Core\Element;
 use WebUI\Components\Menu\MenuItemInterface;
 use WebUI\Components\Menu\MenuItem;
+use WebUI\Components\Menu\MenuItemCollection;
+use BadMethodCallException;
 
 /**
  * The top level menu container
@@ -14,7 +16,8 @@ class MenuFolder extends Element implements MenuItemInterface
 
     protected $linkAttributes = array();
 
-    protected $menuItems = array();
+    //protected $menuItems = array();
+    protected $menuItemCollection;
 
     public function __construct($label, array $attributes = array())
     {
@@ -24,6 +27,8 @@ class MenuFolder extends Element implements MenuItemInterface
             "itemprop" => "itemListElement",
             "itemtype" => "http://schema.org/ItemList",
         ), $attributes));
+
+        $this->menuItemCollection = new MenuItemCollection;
     }
 
     public function setLabel($label)
@@ -41,35 +46,12 @@ class MenuFolder extends Element implements MenuItemInterface
         $this->linkAttributes = $attributes;
     }
 
-    public function appendLink($label, array $linkAttributes = array(), array $attributes = array()) {
-        $item = new MenuItem($label, $attributes);
-        $item->setLinkAttributes($linkAttributes);
-        $this->addMenuItem($item);
-        return $item;
-    }
-
-    public function appendFolder($label, array $attributes = array()) {
-        $folder = new self($attributes);
-        $folder->setLabel($label);
-        $this->addMenuItem($folder);
-        return $folder;
-    }
-
-    public function addMenuItem(MenuItemInterface $item)
-    {
-        $this->menuItems[] = $item;
-    }
-
-    public function getMenuItemByIndex($index)
-    {
-        if (isset($this->menuItems[ $index ])) {
-            return $this->menuItems[ $index ];
+    public function __call($method, $args) {
+        if (method_exists($this->menuItemCollection, $method)) {
+            return call_user_func_array(array($this->menuItemCollection, $method), $args);
+        } else {
+            throw new BadMethodCallException;
         }
-    }
-
-    public function removeMenuItemByIndex($index)
-    {
-        return array_splice($this->menuItems, $index, 1);
     }
 
     public function render($attrs = array())
@@ -85,17 +67,8 @@ class MenuFolder extends Element implements MenuItemInterface
         $a->appendText($this->label);
         $this->append($a);
 
-        $ul = new Element('ul');
-        $ul->setAttributeValue('role', 'menu');
-        $ul->setAttributes(array(
-            'itemscope' => null,
-            'itemtype' => "http://schema.org/ItemList",
-        ));
-        $this->append($ul);
+        $this->append($this->menuItemCollection);
 
-        foreach( $this->menuItems as $item) {
-            $ul->append($item);
-        }
         return parent::render($attrs);
     }
 
