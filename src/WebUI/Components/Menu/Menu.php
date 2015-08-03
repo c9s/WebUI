@@ -22,6 +22,7 @@ class Menu extends Element implements MenuItemInterface, IdentityFinder
             "role" => "menubar",
             "itemscope" => NULL,
             "itemtype" => "http://schema.org/SiteNavigationElement",
+            "class" => $this->classes,
         ), $attributes));
     }
 

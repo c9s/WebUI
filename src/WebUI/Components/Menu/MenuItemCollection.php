@@ -6,8 +6,9 @@ use WebUI\Components\Menu\MenuItemInterface;
 use WebUI\Components\Menu\MenuItem;
 use ArrayIterator;
 use IteratorAggregate;
+use Countable;
 
-class MenuItemCollection extends Element implements MenuItemInterface, IteratorAggregate, IdentityFinder
+class MenuItemCollection extends Element implements MenuItemInterface, IteratorAggregate, IdentityFinder, Countable
 {
     // MenuItem, MenuFolder
     protected $menuItems = array();
@@ -82,6 +83,11 @@ class MenuItemCollection extends Element implements MenuItemInterface, IteratorA
     public function getIterator() 
     {
         return new ArrayIterator($this->menuItems); // array
+    }
+
+    public function count()
+    {
+        return count($this->menuItems);
     }
 
     public function findById($identity)
