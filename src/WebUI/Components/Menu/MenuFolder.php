@@ -18,7 +18,7 @@ use BadMethodCallException;
  *  </li>
  *
  */
-class MenuFolder extends Element implements MenuItemInterface
+class MenuFolder extends Element implements MenuItemInterface, IdentityFinder
 {
     static $defaultMenuClasses = [ 'nav' ];
 
@@ -28,7 +28,9 @@ class MenuFolder extends Element implements MenuItemInterface
 
     protected $menuItemCollection;
 
-    public function __construct($label, array $attributes = array())
+    protected $identity;
+
+    public function __construct($label, array $attributes = array(), $identity = null)
     {
         $this->setLabel($label);
         parent::__construct('li', array_merge(array(
@@ -38,6 +40,18 @@ class MenuFolder extends Element implements MenuItemInterface
         ), $attributes));
 
         $this->menuItemCollection = new MenuItemCollection;
+        
+        $this->setIdentity( $identity ?: crc32(microtime()) );
+    }
+
+    public function setIdentity($identity)
+    {
+        $this->identity = $identity;
+    }
+
+    public function getIdentity()
+    {
+        return $this->identity;
     }
 
     public function setLabel($label)
@@ -60,6 +74,17 @@ class MenuFolder extends Element implements MenuItemInterface
             return call_user_func_array(array($this->menuItemCollection, $method), $args);
         } else {
             throw new BadMethodCallException;
+        }
+    }
+
+    public function findById($identity) 
+    {
+        foreach ($this->menuItemCollection as $menuItem) {
+            if ($menuItem instanceof IdentityFinder) {
+                if ($result = $menuItem->findById($identity)) {
+                    return $result;
+                }
+            }
         }
     }
 

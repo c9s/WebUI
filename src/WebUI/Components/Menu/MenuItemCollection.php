@@ -4,13 +4,16 @@ use Exception;
 use WebUI\Core\Element;
 use WebUI\Components\Menu\MenuItemInterface;
 use WebUI\Components\Menu\MenuItem;
+use ArrayIterator;
+use IteratorAggregate;
 
-class MenuItemCollection extends Element implements MenuItemInterface
+class MenuItemCollection extends Element implements MenuItemInterface, IteratorAggregate, IdentityFinder
 {
     // MenuItem, MenuFolder
     protected $menuItems = array();
+    protected $identity;
 
-    public function __construct($id = null, array $attributes = array())
+    public function __construct(array $attributes = array(), $identity = null)
     {
         Element::__construct('ul', array_merge(array(
             "role" => "menu",
@@ -18,7 +21,17 @@ class MenuItemCollection extends Element implements MenuItemInterface
             "itemtype" => "http://schema.org/ItemList",
         ), $attributes));
 
-        $this->setId( $id ?: crc32(microtime()) );
+        $this->setIdentity( $identity ?: crc32(microtime()) );
+    }
+
+    public function setIdentity($identity)
+    {
+        $this->identity = $identity;
+    }
+
+    public function getIdentity()
+    {
+        return $this->identity;
     }
 
     public function render($attrs = array())
@@ -64,5 +77,19 @@ class MenuItemCollection extends Element implements MenuItemInterface
     public function removeMenuItemByIndex($index)
     {
         return array_splice($this->menuItems, $index, 1);
+    }
+
+    public function getIterator() 
+    {
+        return new ArrayIterator($this->menuItems); // array
+    }
+
+    public function findById($identity)
+    {
+        foreach( $this->menuItems as $item ) {
+            if ( $item->getIdentity() === $identity ) {
+                return $item;
+            }
+        }
     }
 }

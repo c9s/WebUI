@@ -25,9 +25,9 @@ class Menu extends Element implements MenuItemInterface
         ), $attributes));
     }
 
-    public function appendCollection($id = null, array $attributes = array())
+    public function appendCollection(array $attributes = array(), $identity = null)
     {
-        $collection = new MenuItemCollection($id, $attributes);
+        $collection = new MenuItemCollection($attributes, $identity);
         $this->menuItemCollections[] = $collection;
         return $collection;
     }

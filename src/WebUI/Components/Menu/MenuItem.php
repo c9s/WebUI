@@ -14,7 +14,9 @@ class MenuItem extends Element implements MenuItemInterface
 
     protected $linkAttributes = array();
 
-    public function __construct($label, array $attributes = array())
+    protected $identity;
+
+    public function __construct($label, array $attributes = array(), $identity = null)
     {
         $this->setLabel($label);
         parent::__construct('li', array_merge(array(
@@ -22,6 +24,17 @@ class MenuItem extends Element implements MenuItemInterface
             "itemprop" => "itemListElement",
             "itemscope" => NULL,
         ), $attributes));
+        $this->setIdentity( $identity ?: crc32(microtime()) );
+    }
+
+    public function setIdentity($identity)
+    {
+        $this->identity = $identity;
+    }
+
+    public function getIdentity()
+    {
+        return $this->identity;
     }
 
     public function setLabel($label)

@@ -40,14 +40,14 @@ class MenuTest extends PHPUnit_Framework_TestCase
     public function testMenu()
     {
         $menu = new Menu;
-        $collection = $menu->appendCollection('main');
+        $collection = $menu->appendCollection([], 'main');
         $collection->appendLink('Car', ['href' => '/products/car']);
         $collection->appendLink('Bicycle', ['href' => '/products/bicycle']);
         $folder = $collection->appendFolder('Others');
         $folder->appendLink('A',  [ 'href' => '/products/a']);
         $folder->appendLink('B',  [ 'href' => '/products/b']);
         
-        $collection = $menu->appendCollection('second');
+        $collection = $menu->appendCollection([], 'second');
         $folder = $collection->appendFolder('Others2');
         $folder->appendLink('C',  [ 'href' => '/products/c']);
         $folder->appendLink('D',  [ 'href' => '/products/d']);
