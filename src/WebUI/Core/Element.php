@@ -785,8 +785,13 @@ class Element implements ArrayAccess
         $dom->strictErrorChecking = true;
         $dom->validateOnParse = false;
         $dom->resolveExternals = false;
-        $dom->loadHTML($html);
-        return $dom->saveHTML();
+        $dom->loadXML($html);
+
+        $prettyHTML = '';
+        foreach ($dom->childNodes as $node) {
+            $prettyHTML .= $dom->saveXML($node) . "\n";
+        }
+        return $prettyHTML;
     }
 
 
