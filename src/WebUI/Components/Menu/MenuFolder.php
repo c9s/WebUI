@@ -7,14 +7,24 @@ use WebUI\Components\Menu\MenuItem;
 
 /**
  * The top level menu container
+ *
+ *  <li class="has-children">
+ *     <a href="/...">Folder</a>
+ *     <ul> 
+ *       ... menu items...
+ *     </ul>
+ *  </li>
+ *
  */
 class MenuFolder extends Element implements MenuItemInterface
 {
+    static $defaultMenuClasses = [ 'nav' ];
+
     protected $label;
 
     protected $linkAttributes = array();
 
-    protected $menuItems = array();
+    protected $menuItems;
 
     public function __construct($label, array $attributes = array())
     {
@@ -24,6 +34,9 @@ class MenuFolder extends Element implements MenuItemInterface
             "itemprop" => "itemListElement",
             "itemtype" => "http://schema.org/ItemList",
         ), $attributes));
+
+        // $this->collection = new MenuItemCollection;
+
     }
 
     public function setLabel($label)
