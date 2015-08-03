@@ -7,8 +7,6 @@ use WebUI\Components\Menu\MenuItem;
 
 /**
  * The top level menu container
-
-
  */
 class MenuItem extends Element implements MenuItemInterface
 {

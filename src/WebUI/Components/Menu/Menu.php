@@ -6,17 +6,15 @@ use WebUI\Components\Menu\MenuItemInterface;
 use WebUI\Components\Menu\MenuItem;
 use WebUI\Components\Menu\MenuFolder;
 
-
 /**
  * <nav>
  *
  * </nav>
  */
-class Menu extends MenuFolder
+class Menu extends Element implements MenuItemInterface
 {
-    protected $ul;
-
     protected $classes = array('webui-menu');
+    protected $menuItemCollections = array();
 
     public function __construct(array $attributes = array())
     {
@@ -25,27 +23,19 @@ class Menu extends MenuFolder
             "itemscope" => NULL,
             "itemtype" => "http://schema.org/SiteNavigationElement",
         ), $attributes));
-
-        // $this->collection = new MenuItemCollection;
-
-        $this->ul = new Element('ul');
-        $this->ul->setAttributeValue('role', 'menu');
-        $this->ul->setAttributes(array(
-            'itemscope' => NULL,
-            'itemtype' => "http://schema.org/ItemList",
-        ));
-        $this->append($this->ul);
     }
 
-    public function getMenuItemCollection()
+    public function appendCollection($id = null, array $attributes = array())
     {
-        return $this->menuItemCollection;
+        $collection = new MenuItemCollection($id, $attributes);
+        $this->menuItemCollections[] = $collection;
+        return $collection;
     }
 
     public function render($attrs = array())
     {
-        foreach ($this->menuItems as $item) {
-            $this->ul->append($item);
+        foreach( $this->menuItemCollections as $collection) {
+            $this->append($collection);
         }
         return Element::render($attrs);
     }

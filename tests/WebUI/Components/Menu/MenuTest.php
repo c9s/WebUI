@@ -2,6 +2,7 @@
 use WebUI\Components\Menu\MenuFolder;
 use WebUI\Components\Menu\MenuItem;
 use WebUI\Components\Menu\Menu;
+use WebUI\Components\Menu\MenuItemCollection;
 
 class MenuTest extends PHPUnit_Framework_TestCase
 {
@@ -32,23 +33,47 @@ class MenuTest extends PHPUnit_Framework_TestCase
         $item4 = $menu->appendLink('Others', [ 'href' => '/products/others' ]);
         ok($item4);
         $html = $menu->render();
-        // var_dump( $html );
+        //var_dump( $html );
         // file_put_contents('test.html', '<html><head><style> </style></head><body>' . $html . '</body></html>');
     }
 
     public function testMenu()
     {
         $menu = new Menu;
-        $menu->appendLink('Car', ['href' => '/products/car']);
-        $menu->appendLink('Bicycle', ['href' => '/products/bicycle']);
-        $folder = $menu->appendFolder('Others');
+        $collection = $menu->appendCollection('main');
+        $collection->appendLink('Car', ['href' => '/products/car']);
+        $collection->appendLink('Bicycle', ['href' => '/products/bicycle']);
+        $folder = $collection->appendFolder('Others');
         $folder->appendLink('A',  [ 'href' => '/products/a']);
         $folder->appendLink('B',  [ 'href' => '/products/b']);
+        
+        $collection = $menu->appendCollection('second');
+        $folder = $collection->appendFolder('Others2');
+        $folder->appendLink('C',  [ 'href' => '/products/c']);
+        $folder->appendLink('D',  [ 'href' => '/products/d']);
+
         $html = $menu->render();
-        // echo $html;
+
+        //echo $html;
         file_put_contents('test.html', '<html><head><style> </style></head><body>' . $html . '</body></html>');
     }
 
+    public function testMenuItemCollection()
+    {
+        $menu = new MenuItemCollection;
+        $item1 = $menu->appendLink('Car', [ 'href' => '/products/car' ]);
+        ok($item1);
+        $folder = $menu->appendFolder('Others');
+        ok($folder);
+        $folder->appendLink('A',  [ 'href' => '/products/a']);
+        $folder->appendLink('B',  [ 'href' => '/products/b']);
+        $html = $menu->render();
 
+        $dom = new DOMDocument('1.0');
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $dom->loadHtml($html);
+        echo $dom->saveHTML();
+    }
 }
 
