@@ -767,15 +767,28 @@ class Element implements ArrayAccess
      */
     public function render($attributes = array()) 
     {
-        if( ! $this->tagName ) {
+        if (!$this->tagName) {
             throw new Exception('tagName is not defined.');
         }
-
-        $html = $this->open( $attributes );
+        $html  = $this->open( $attributes );
         $html .= $this->renderChildren();
         $html .= $this->close();
         return $html;
     }
+
+    public function formatRender($attributes = array())
+    {
+        $html = $this->render($attributes);
+        $dom = new DOMDocument('1.0');
+        $dom->preserveWhiteSpace = true;
+        $dom->formatOutput = true;
+        $dom->strictErrorChecking = true;
+        $dom->validateOnParse = false;
+        $dom->resolveExternals = false;
+        $dom->loadHTML($html);
+        return $dom->saveHTML();
+    }
+
 
     public function __toString()
     {
