@@ -11,7 +11,7 @@ use WebUI\Components\Menu\MenuFolder;
  *
  * </nav>
  */
-class Menu extends Element implements MenuItemInterface
+class Menu extends Element implements MenuItemInterface, IdentityFinder
 {
     protected $classes = array('webui-menu');
     protected $menuItemCollections = array();
@@ -30,6 +30,19 @@ class Menu extends Element implements MenuItemInterface
         $collection = new MenuItemCollection($attributes, $identity);
         $this->menuItemCollections[] = $collection;
         return $collection;
+    }
+
+    public function findById($identity)
+    {
+        foreach( $this->menuItemCollections as $collection ) {
+            if ($collection instanceof IdentityFinder) {
+                if ($result = $collection->findById($identity)) {
+                    return $result;
+                }
+            } else if ( $collection->getIdentity() === $identity ) {
+                return $collection;
+            }
+        }
     }
 
     public function render($attrs = array())

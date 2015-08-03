@@ -87,7 +87,11 @@ class MenuItemCollection extends Element implements MenuItemInterface, IteratorA
     public function findById($identity)
     {
         foreach( $this->menuItems as $item ) {
-            if ( $item->getIdentity() === $identity ) {
+            if ($item instanceof IdentityFinder) {
+                if ($result = $item->findById($identity)) {
+                    return $result;
+                }
+            } else if ( $item->getIdentity() === $identity ) {
                 return $item;
             }
         }
