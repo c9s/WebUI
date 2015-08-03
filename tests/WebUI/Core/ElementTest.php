@@ -11,7 +11,7 @@ class ElementTest extends PHPUnit_Framework_TestCase
         $element->append(new Element('li'));
         $element->append(new Element('li'));
         $html = $element->formatRender();
-        echo $html;
+        $this->assertNotNull($html);
     }
 }
 
