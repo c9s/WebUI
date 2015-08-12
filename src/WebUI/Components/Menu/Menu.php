@@ -14,6 +14,7 @@ use WebUI\Components\Menu\MenuFolder;
 class Menu extends Element implements MenuItemInterface, IdentityFinder
 {
     protected $classes = array('webui-menu');
+
     protected $menuItemCollections = array();
 
     public function __construct(array $attributes = array())
@@ -35,7 +36,7 @@ class Menu extends Element implements MenuItemInterface, IdentityFinder
 
     public function findById($identity)
     {
-        foreach( $this->menuItemCollections as $collection ) {
+        foreach ($this->menuItemCollections as $collection) {
             if ($collection instanceof IdentityFinder) {
                 if ($result = $collection->findById($identity)) {
                     return $result;

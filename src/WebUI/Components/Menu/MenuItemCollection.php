@@ -19,6 +19,7 @@ class MenuItemCollection extends Element implements MenuItemInterface, IteratorA
         Element::__construct('ul', array_merge(array(
             "role" => "menu",
             "itemscope" => NULL,
+            "class" => "nav",
             "itemtype" => "http://schema.org/ItemList",
         ), $attributes));
 
