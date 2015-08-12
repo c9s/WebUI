@@ -12,7 +12,7 @@ class MenuItem extends Element implements MenuItemInterface
 {
     protected $label;
 
-    protected $linkAttributes = array();
+    protected $linkAttributes = array( 'href' => '#' );
 
     protected $identity;
 

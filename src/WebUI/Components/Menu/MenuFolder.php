@@ -20,11 +20,9 @@ use BadMethodCallException;
  */
 class MenuFolder extends Element implements MenuItemInterface, IdentityFinder
 {
-    static $defaultMenuClasses = [ 'nav' ];
-
     protected $label;
 
-    protected $linkAttributes = array();
+    protected $linkAttributes = array( 'href' => '#' );
 
     protected $menuItemCollection;
 
@@ -40,7 +38,6 @@ class MenuFolder extends Element implements MenuItemInterface, IdentityFinder
         ), $attributes));
 
         $this->menuItemCollection = new MenuItemCollection;
-        
         $this->setIdentity( $identity ?: crc32(microtime()) );
     }
 
@@ -97,7 +94,7 @@ class MenuFolder extends Element implements MenuItemInterface, IdentityFinder
         }
 
         // create label with tag "a"
-        $a = new Element('a');
+        $a = new Element('a', $this->linkAttributes);
         $a->appendText($this->label);
         $this->append($a);
 
