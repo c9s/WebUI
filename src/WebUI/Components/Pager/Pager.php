@@ -1,5 +1,5 @@
 <?php
-namespace WebUI\Components;
+namespace WebUI\Components\Pager;
 use WebUI\Core\Div;
 use WebUI\Core\Element;
 
