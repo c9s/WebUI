@@ -1,5 +1,5 @@
 <?php
-use WebUI\Components\Pager;
+use WebUI\Components\Pager\Pager;
 
 class PagerTest extends PHPUnit_Framework_TestCase
 {
