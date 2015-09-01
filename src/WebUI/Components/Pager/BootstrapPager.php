@@ -14,9 +14,14 @@ class BootstrapPager
     public $prevText;
 
     public $showHeader = false;
-    public $showNavigator = true;
+
+    /**
+     * @var boolena show navigator
+     */
+    public $navigator = true;
+
     public $showPageNumbers = true;
-    public $wrapperClass = array('pagination', 'pagination-centered', 'pagination-mini', 'pagination-right');
+    public $wrapperClass = array('pagination', 'pagination-centered', 'pagination-mini');
     public $whenOverflow  = true;
 
     public $rangeLimit = 3;
@@ -93,30 +98,31 @@ class BootstrapPager
 
     public function renderLink( $num , $text = null , $moreclass = "" , $disabled = false , $active = false )
     {
-        if ( $text == null )
+        if ($text === null) {
             $text = $num;
+        }
 
-        if ( $disabled )
-
-            return $this->renderLink_dis( $text , $moreclass );
+        if ($disabled) {
+            return $this->renderLinkDisabled( $text , $moreclass );
+        }
 
         $args = array_merge( $_GET , $_POST );
         $href = $this->mergeQuery( $args , array( "page" => $num ) );
         $liClass = '';
-        if ( $active ) {
+        if ($active) {
             $liClass = 'active';
         }
         return <<<EOF
- <li class="$liClass"><a class="pager-link $moreclass" href="$href">$text</a></li>
+ <li class="$liClass"><a data-target-page="$num" class="pager-link $moreclass" href="$href">$text</a></li>
 EOF;
 
 
     }
 
-    public function renderLink_dis( $text , $moreclass = "" )
+    public function renderLinkDisabled( $text , $moreclass = "" )
     {
         return <<<EOF
- <li><a class="pager-link pager-disabled $moreclass">$text</a></li>
+<li class="disabled"><a class="pager-link pager-disabled $moreclass">$text</a></li>
 EOF;
     }
 
@@ -154,15 +160,11 @@ TWIG;
         $pagenum_end   = $cur + $this->rangeLimit < $total_pages ?  $cur + $this->rangeLimit : $total_pages;
 
         $output = "";
-        $output .= '<div class="'. join(' ',$this->wrapperClass) .'">';
-        $output .= '<ul>';
+        $output .= '<ul class="'. join(' ',$this->wrapperClass) .'">';
 
-        if ($this->showNavigator) {
-            if ( $cur > 1 )
-                $output .= $this->renderLink( 1       , $this->firstText , 'pager-first' , $cur == 1 );
-
-            if ( $cur > 1 )
-                $output .= $this->renderLink( $cur -1 , $this->prevText  , 'pager-prev'  , $cur == 1 );
+        if ($this->navigator) {
+            $output .= $this->renderLink( 1       , $this->firstText , 'pager-first' , $cur == 1 );
+            $output .= $this->renderLink( $cur - 1 , $this->prevText  , 'pager-prev'  , $cur == 1 );
         }
 
 
@@ -186,19 +188,13 @@ TWIG;
             }
         }
 
-        if ($this->showNavigator) {
-
-            if ( $cur < $total_pages )
-                $output .= $this->renderLink( $cur + 1,
-                            $this->nextText , 'pager-next' , $cur == $this->totalPages );
-
-            if ( $total_pages > 1 && $cur < $total_pages )
-                $output .= $this->renderLink( $this->totalPages,
-                            $this->lastText , 'pager-last' , $cur == $this->totalPages );
+        if ($this->navigator) {
+            $output .= $this->renderLink( $cur + 1,
+                        $this->nextText , 'pager-next' , $cur == $this->totalPages );
+            $output .= $this->renderLink( $this->totalPages,
+                        $this->lastText , 'pager-last' , $cur == $this->totalPages );
         }
-
         $output .= '</ul>';
-        $output .= '</div>';
         return $output;
     }
 }
