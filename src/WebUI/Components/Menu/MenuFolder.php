@@ -28,9 +28,12 @@ class MenuFolder extends Element implements MenuItemInterface, IdentityFinder
 
     protected $identity;
 
-    public function __construct($label, array $attributes = array(), $identity = null)
+    public function __construct($label, array $linkAttributes = null, array $attributes = array(), $identity = null)
     {
         $this->setLabel($label);
+        if ($linkAttributes) {
+            $this->setLinkAttributes($linkAttributes);
+        }
         parent::__construct('li', array_merge(array(
             "role" => "menuitem",
             "itemprop" => "itemListElement",
