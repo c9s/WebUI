@@ -98,7 +98,7 @@ class MenuFolder extends Element implements MenuItemInterface, IdentityFinder
 
         // create label with tag "a"
         $a = new Element('a', $this->linkAttributes);
-        $a->appendText($this->label);
+        $a->append($this->label);
         $this->append($a);
 
         $this->append($this->menuItemCollection);
