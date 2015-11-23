@@ -27,7 +27,7 @@ class MenuItem extends Element implements MenuItemInterface
             "itemprop" => "itemListElement",
             "itemscope" => NULL,
         ), $attributes));
-        $this->setIdentity( $identity ?: crc32(microtime()) );
+        $this->setIdentity( $identity ?: uniqid('menuItem') );
     }
 
     public function setIdentity($identity)
@@ -64,7 +64,7 @@ class MenuItem extends Element implements MenuItemInterface
         // create label with tag "a"
         $a = new Element('a', $this->linkAttributes);
         $a->setAttributeValue("role","menuitem");
-        $a->appendText($this->label);
+        $a->append($this->label);
         $this->append($a);
         return parent::render($attributes);
     }
