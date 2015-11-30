@@ -57,17 +57,32 @@ class MenuItemCollection extends Element implements MenuItemInterface, IteratorA
         return $item;
     }
 
-    public function appendFolder($label, array $attributes = array(), array $config = array()) {
-        $folder = new MenuFolder($attributes);
-
-        if (isset($config['icon_class'])) {
-            $label = '<i class="' . $config['icon_class'] . '"> </i> ' . $label;
-        }
-
-        $folder->setLabel($label);
+    public function appendFolder($label, array $attributes = array(), array $config = array())
+    {
+        $folder = self::createFolder($label, $attributes, $config);
         $this->addMenuItem($folder);
         return $folder;
     }
+
+
+    static public function createItem($label, array $linkAttributes = array(), array $attributes = array())
+    {
+        $item = new MenuItem($label, $attributes);
+        $item->setLinkAttributes($linkAttributes);
+        return $item;
+    }
+
+    static public function createFolder($label, array $attributes = array(), array $config = array())
+    {
+        $folder = new MenuFolder($attributes);
+        if (isset($config['icon_class'])) {
+            $label = '<i class="' . $config['icon_class'] . '"> </i> ' . $label;
+        }
+        $folder->setLabel($label);
+        return $folder;
+    }
+
+
 
     public function addMenuItem(MenuItemInterface $item)
     {
