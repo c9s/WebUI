@@ -577,8 +577,9 @@ class Element implements ArrayAccess
             if ($node instanceof DOMText || $node instanceof DOMNode ) {
                 // to use C14N(), the DOMNode must be belongs to an instance of DOMDocument.
                 $dom = new DOMDocument;
-                $dom->appendChild($node);
-                $html .= $node->C14N();;
+                $node2 = $dom->importNode($node);
+                $dom->appendChild($node2);
+                $html .= $node2->C14N();;
             } elseif (is_string($node) ) {
                 $html .= $node;
             } elseif (is_object($node)
