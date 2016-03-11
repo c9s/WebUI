@@ -15,9 +15,9 @@
         "corneltek/phpunit-testmore": "dev-master"
     },
     "autoload": {
-        "psr-0": {
-            "WebUI": "src"
+        "psr-4": {
+            "WebUI\\": "src/WebUI/"
         }
     },
-    "version": "1.1.0"
+    "version": "1.2.0"
 }
