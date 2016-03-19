@@ -1,5 +1,5 @@
 <?php
-namespace WebUI\Components;
+namespace WebUI\Components\Pager;
 
 /**
  * A simple pager, does not depends on Pager interface.
