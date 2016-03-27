@@ -31,23 +31,16 @@ class Bootstrap2Pager
      * @param integer total size
      * @param integer page size (optional)
      */
-    public function __construct()
+    public function __construct($currentPage = 1, $pageSize = 10, $total)
     {
         $this->firstText = _('Page.First');
         $this->lastText  = _('Page.Last');
         $this->nextText  = _('Page.Next');
         $this->prevText  = _('Page.Previous');
-        if ( $args = func_get_args() ) {
-            if ( 2 === count($args) ) {
-                $this->currentPage = $args[0] ?: 1;
-                $this->pageSize = 10;
-                $this->calculatePages($args[1]);
-            } elseif ( 3 === count($args) ) {
-                $this->currentPage = $args[0] ?: 1;
-                $this->pageSize = intval($args[2]) ?: 10;
-                $this->calculatePages($args[1],$args[2]);
-            }
-        }
+
+        $this->currentPage = $currentPage;
+        $this->pageSize = $pageSize;
+        $this->calculatePages($total);
     }
 
     public function setFirstPageText($text)
