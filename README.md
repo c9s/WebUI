@@ -55,6 +55,20 @@ $component = new ReactComponent('CRUDListApp', array( 'prop1' => 'setting' ));
 $out = $component->render();
 ```
 
+The code above renders the html below:
+
+```html
+<div class="react-component react-app" id="CRUDListApp56faad9210df6"></div>
+<script>
+document.addEventListener('load', function(evt) {
+var app56faad9210e79 = React.createElement(CRUDListApp,{
+    "prop1": "setting"
+});
+React.render(app56faad9210e79, document.getElementById('CRUDListApp56faad9210df6'));
+});
+</script>
+```
+
 
 
 
