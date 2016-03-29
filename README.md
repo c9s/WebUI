@@ -46,3 +46,15 @@ Components
 ----------------------
 
 
+## ReactComponent
+
+Rendering ReactComponent initializer from PHP settings:
+
+```php
+$component = new ReactComponent('CRUDListApp', array( 'prop1' => 'setting' ));
+$out = $component->render();
+```
+
+
+
+
