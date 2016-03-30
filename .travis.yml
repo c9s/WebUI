@@ -7,8 +7,8 @@ php:
 before_script:
   - phpenv rehash
   - composer self-update
-  - composer require satooshi/php-coveralls:dev-master --no-update --dev
-  - composer install --dev
+  - composer require satooshi/php-coveralls "^1" --no-update --dev
+  - composer install
 
 script: 
   - phpunit
