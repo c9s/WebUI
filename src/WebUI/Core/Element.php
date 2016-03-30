@@ -33,6 +33,7 @@ class Element implements ArrayAccess
 
     protected $_ignoredAttributes = array();
 
+    protected $extraAttributeString;
 
     /**
      *
@@ -46,6 +47,10 @@ class Element implements ArrayAccess
         $this->init($attributes);
     }
 
+    public function setExtraAttributeString($attrString)
+    {
+        $this->extraAttributeString = $attrString;
+    }
 
     public function isIgnoredAttribute($name)
     {
@@ -733,10 +738,12 @@ class Element implements ArrayAccess
      *
      * $form->close();
      */
-    public function open( $attributes = array() ) {
+    public function open($attributes = array())
+    {
         $this->setAttributes( $attributes );
         $html = '<' . $this->tagName
                     . $this->renderAttributes()
+                    . ($this->extraAttributeString ?: '')
                     ;
         // should we close it ?
         if ($this->closeEmpty || $this->hasChildren()) {
@@ -747,13 +754,13 @@ class Element implements ArrayAccess
         return $html;
     }
 
-
     /**
      * Render close tag
      */
-    public function close() {
+    public function close()
+    {
         $html = '';
-        if( $this->closeEmpty || $this->hasChildren() ) {
+        if ($this->closeEmpty || $this->hasChildren()) {
             $html .= '</' . $this->tagName . '>';
         }
         return $html;
