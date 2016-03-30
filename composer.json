@@ -8,10 +8,9 @@
             "email": "cornelius.howl@gmail.com"
         }
     ],
-    "require": {
-        "corneltek/formkit": "*"
-    },
+    "require": { },
     "require-dev": {
+        "corneltek/formkit": "*",
         "corneltek/phpunit-testmore": "dev-master"
     },
     "autoload": {
