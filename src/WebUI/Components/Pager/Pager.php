@@ -4,9 +4,7 @@ use WebUI\Core\Div;
 use WebUI\Core\Element;
 
 /**
- * A simple pager, does not depends on Pager interface.
- *
- * @version 2
+ * Bootstrap3 pager
  */
 class Pager extends Element
 {
@@ -32,7 +30,6 @@ class Pager extends Element
     public $currentPage = 1;
 
     /**
-     *
      *
      * @param integer current page
      * @param integer total size

@@ -1,11 +1,6 @@
 <?php
 namespace WebUI\Components\Pager;
 
-/**
- * A simple pager, does not depends on Pager interface.
- *
- * @version 2
- */
 class BootstrapPager
 {
     public $firstText;
@@ -26,8 +21,7 @@ class BootstrapPager
 
     public $rangeLimit = 3;
 
-    public $totalPages = 0;
-    public $pageSize = 20;
+    public $totalPages = 1;
     public $currentPage = 1;
 
     /**
@@ -36,23 +30,15 @@ class BootstrapPager
      * @param integer total size
      * @param integer page size (optional)
      */
-    public function __construct()
+    public function __construct($currentPage, $totalPages)
     {
         $this->firstText = _('Page.First');
         $this->lastText  = _('Page.Last');
         $this->nextText  = _('Page.Next');
         $this->prevText  = _('Page.Previous');
-        if ( $args = func_get_args() ) {
-            if ( 2 === count($args) ) {
-                $this->currentPage = $args[0] ?: 1;
-                $this->pageSize = 10;
-                $this->calculatePages($args[1]);
-            } elseif ( 3 === count($args) ) {
-                $this->currentPage = $args[0] ?: 1;
-                $this->pageSize = intval($args[2]) ?: 10;
-                $this->calculatePages($args[1],$args[2]);
-            }
-        }
+
+        $this->currentPage = $currentPage;
+        $this->totalPages = $totalPages;
     }
 
     public function setFirstPageText($text)
@@ -80,19 +66,9 @@ class BootstrapPager
         $this->wrapperClass[] = $class;
     }
 
-    /**
-     * @param integer $total
-     * @param integer $size  = null  (optional)
-     */
-    public function calculatePages($total)
-    {
-        $this->totalPages = $total > 0 ? (int) ceil($total / $this->pageSize ) : 0;
-    }
-
     public function mergeQuery( $orig_params , $params = array() )
     {
         $params = array_merge(  $orig_params , $params );
-
         return '?' . http_build_query( $params );
     }
 
@@ -129,22 +105,6 @@ EOF;
     public function __toString()
     {
         return $this->render();
-    }
-
-    public function render2()
-    {
-        $heredoc = new \Phifty\View\Heredoc('twig');
-        $heredoc->content =<<<TWIG
-<div class="pager">
-    {% for i in 0 .. totalPages %}
-
-    {% endfor %}
-</div>
-TWIG;
-        $html = $heredoc->render(array(
-            'currentPage' => $this->currentPage,
-            'totalPages'  => $this->totalPages,
-        ));
     }
 
     public function render()

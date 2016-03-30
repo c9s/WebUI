@@ -1,11 +1,6 @@
 <?php
 namespace WebUI\Components\Pager;
 
-/**
- * A simple pager, does not depends on Pager interface.
- *
- * @version 2
- */
 class Bootstrap2Pager
 {
     public $firstText;
@@ -22,7 +17,6 @@ class Bootstrap2Pager
     public $rangeLimit = 3;
 
     public $totalPages = 0;
-    public $pageSize = 20;
     public $currentPage = 1;
 
     /**
@@ -31,16 +25,14 @@ class Bootstrap2Pager
      * @param integer total size
      * @param integer page size (optional)
      */
-    public function __construct($currentPage = 1, $pageSize = 10, $total)
+    public function __construct($currentPage, $totalPages)
     {
         $this->firstText = _('Page.First');
         $this->lastText  = _('Page.Last');
         $this->nextText  = _('Page.Next');
         $this->prevText  = _('Page.Previous');
-
         $this->currentPage = $currentPage;
-        $this->pageSize = $pageSize;
-        $this->calculatePages($total);
+        $this->totalPages = $totalPages;
     }
 
     public function setFirstPageText($text)
@@ -68,15 +60,6 @@ class Bootstrap2Pager
         $this->wrapperClass[] = $class;
     }
 
-    /**
-     * @param integer $total
-     * @param integer $size  = null  (optional)
-     */
-    public function calculatePages($total)
-    {
-        $this->totalPages = $total > 0 ? (int) ceil($total / $this->pageSize ) : 0;
-    }
-
     public function mergeQuery( $orig_params , $params = array() )
     {
         $params = array_merge(  $orig_params , $params );
@@ -90,8 +73,7 @@ class Bootstrap2Pager
             $text = $num;
 
         if ( $disabled )
-
-            return $this->renderLink_dis( $text , $moreclass );
+            return $this->renderDisabledLink( $text , $moreclass );
 
         $args = array_merge( $_GET , $_POST );
         $href = $this->mergeQuery( $args , array( "page" => $num ) );
@@ -102,11 +84,9 @@ class Bootstrap2Pager
         return <<<EOF
  <li class="$liClass"><a class="pager-link $moreclass" href="$href">$text</a></li>
 EOF;
-
-
     }
 
-    public function renderLink_dis( $text , $moreclass = "" )
+    protected function renderDisabledLink( $text , $moreclass = "" )
     {
         return <<<EOF
  <li><a class="pager-link pager-disabled $moreclass">$text</a></li>
@@ -116,22 +96,6 @@ EOF;
     public function __toString()
     {
         return $this->render();
-    }
-
-    public function render2()
-    {
-        $heredoc = new \Phifty\View\Heredoc('twig');
-        $heredoc->content =<<<TWIG
-<div class="pager">
-    {% for i in 0 .. totalPages %}
-
-    {% endfor %}
-</div>
-TWIG;
-        $html = $heredoc->render(array(
-            'currentPage' => $this->currentPage,
-            'totalPages'  => $this->totalPages,
-        ));
     }
 
     public function render()
