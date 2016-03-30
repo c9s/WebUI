@@ -1,7 +1,7 @@
 <?php
 namespace WebUI\Components\Pager;
 
-class Bootstrap2Pager
+class Bootstrap2Pager extends BasePager
 {
     public $firstText;
     public $lastText;
@@ -34,6 +34,7 @@ class Bootstrap2Pager
         $this->currentPage = $currentPage;
         $this->totalPages = $totalPages;
     }
+
 
     public function setFirstPageText($text)
     {

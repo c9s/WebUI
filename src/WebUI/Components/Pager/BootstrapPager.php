@@ -1,11 +1,14 @@
 <?php
 namespace WebUI\Components\Pager;
 
-class BootstrapPager
+class BootstrapPager extends BasePager
 {
     public $firstText;
+
     public $lastText;
+
     public $nextText;
+
     public $prevText;
 
     public $showHeader = false;
