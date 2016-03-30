@@ -9,13 +9,19 @@ use WebUI\Core\Element;
 class Pager extends Element
 {
     public $firstPageLabel;
+
     public $lastPageLabel;
+
     public $nextPageLabel;
+
     public $prevPageLabel;
 
     public $showHeader = false;
+
     public $showNavigator = true;
+
     public $showNearbyPages = true;
+
     public $whenOverflow  = true;
 
     protected $navWrapper = true;
@@ -31,19 +37,19 @@ class Pager extends Element
 
     /**
      *
-     * @param integer current page
-     * @param integer total size
-     * @param integer page size (optional)
+     * @param integer $currentPage current page
+     * @param integer $totalPages total size
+     * @param string $baseUrl
      */
-    public function __construct($currentPage, $totalPages)
+    public function __construct($currentPage, $totalPages, $baseUrl = null)
     {
         $this->firstPageLabel = '&#171;';
         $this->lastPageLabel  = '&#187;';
         $this->nextPageLabel  = '&#8250;';
         $this->prevPageLabel  = '&#8249;';
-
         $this->currentPage = $currentPage;
         $this->totalPages = $totalPages;
+        $this->baseUrl = $baseUrl;
         parent::__construct('ul');
     }
 
@@ -73,17 +79,11 @@ class Pager extends Element
     }
 
     /**
-     * @param integer $total
-     * @param integer $size  = null  (optional)
+     * build page query
      */
-    public function calculatePages($total, $pageSize)
+    protected function buildQuery(array $origParams , $params = array() )
     {
-        $this->totalPages = $total > 0 ? (int) ceil($total / $pageSize ) : 0;
-    }
-
-    public function buildQuery( $origParams , $params = array() )
-    {
-        $params = array_merge(  $origParams , $params );
+        $params = array_merge($origParams , $params);
         return $this->baseUrl . '?' . http_build_query($params);
     }
 
