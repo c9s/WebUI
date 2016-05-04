@@ -164,8 +164,9 @@ class Element implements ArrayAccess
      */
     public function setAttribute($name,$args)
     {
-        if ( $this->isIgnoredAttribute($name) )
-            continue;
+        if ($this->isIgnoredAttribute($name)) {
+            return;
+        }
 
         // check if it's registered.
         if( isset($this->_supportedAttributes[ $name ]) ) 
